@@ -27,6 +27,7 @@ char cwd[1024];
 char root[1024];
 char prev_comm[1024];
 int nested_count;
+struct stat tp;
 
 void substring();
 void exitout();
@@ -34,3 +35,4 @@ void handleonjobs();
 void echo(char *);
 void pwd();
 void cd(char *token, char argument[]);
+void ls(char *);

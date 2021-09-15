@@ -2,6 +2,7 @@
 void pwd()
 {
 	getcwd(cwd, 100);
-	printf("%s\n", cwd);
+	printf("%s", cwd);
+	printf("\n");
 	handleonjobs();
 }

@@ -1,9 +1,9 @@
 #include "headers.h"
 void exitout()
 {
-	lp(i, 0, onjobs)
+	for(int i=0 ; i<onjobs ; i++)
 	{
-		if (fbjobs[i].status == 0)
+		if (!(fbjobs[i].status))
 		{
 			kill(fbjobs[i].pid, 9);
 			// fbjobs[i].status = 0;

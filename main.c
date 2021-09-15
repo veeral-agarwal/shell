@@ -28,6 +28,15 @@ void command_handler(char buf[])
 	{
 		cd(token, argument);
 	}
+	else if (strcmp(token, "exit\n") == 0 || strcmp(token, "exit") == 0)
+	{
+		exitout();
+	}
+	else if (strcmp(token, "ls\n") == 0 || strcmp(token, "ls") == 0)
+	{
+		// printf("dwad\n");
+		ls(token);
+	}
     
 	return;
 }
