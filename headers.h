@@ -29,6 +29,9 @@ char prev_comm[1024];
 int nested_count;
 struct stat tp;
 
+void fg(char *);
+void bg(char *);
+void pinfo(char *);
 void substring();
 void exitout();
 void handleonjobs();

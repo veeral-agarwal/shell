@@ -1,61 +1,61 @@
 #include "headers.h"
-void cd(char *token, char argument[])
+void cd(char *token, char argg[])
 {
 	token = strtok (token + strlen (token) + 1, " ");
-	if (token == NULL)
+	if (!token)
 	{
 		chdir(root);
 		return;
 	}
 	int c = 0;
 	while (token[c] == ' ')
-		c++;
-	lp(i, c, strlen(token) - 1)
 	{
-		argument[i - c] = token[i];
+		c+=1;
 	}
-	argument[strlen(token) - c - 1] = '\0';
-	// printf("%d\n", strlen(argument));
+	for(int i=c ; i<strlen(token) - 1 ; i++)
+	{
+		argg[i - c] = token[i];
+	}
+	argg[strlen(token) - c - 1] = '\0';
 	token = strtok (token + strlen (token) + 1, " ");
-	if (token != NULL)
-	{
-		printf("Error: Two many arguments\n");
-		return;
-	}
-	else
+	if (!token)
 	{
 		int d;
-		if (strcmp(argument, "..") == 0)
-		{
-			if (nested_count == 0)
-			{
-				chdir(argument);
-				// printf("%s\n", root);
-			}
-			else
-			{
-				nested_count--;
-				chdir(argument);
-			}
-		}
-		else if (strcmp(argument, "~") == 0)
+		if (strcmp(argg, "~") == 0)
 		{
 			nested_count = 0;
 			chdir(root);
 		}
+		else if (strcmp(argg, "..") == 0)
+		{
+			if (nested_count == 0)
+			{
+				chdir(argg);
+			}
+			else
+			{
+				nested_count-=1;
+				chdir(argg);
+			}
+		}
 		else
 		{
-			d = chdir(argument);
-			if (d == -1)
+			d = chdir(argg);
+			if (d != -1)
+			{
+				nested_count+=1;
+			}
+			else
 			{
 				printf("Error: No such file or directory\n");
 				return;
 			}
-			else
-			{
-				nested_count++;
-			}
 		}
+	}
+	else
+	{
+		printf("Error: Two many arggs\n");
+		return;
 	}
 	handleonjobs();
 }

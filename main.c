@@ -32,10 +32,22 @@ void command_handler(char buf[])
 	{
 		exitout();
 	}
+	else if (strcmp(token, "pinfo\n") == 0 || strcmp(token, "pinfo") == 0)
+	{
+		pinfo(token);
+	}
 	else if (strcmp(token, "ls\n") == 0 || strcmp(token, "ls") == 0)
 	{
 		// printf("dwad\n");
 		ls(token);
+	}
+	else if (strcmp(token, "fg") == 0)
+	{
+		fg(token);
+	}
+	else if (strcmp(token, "bg") == 0)
+	{
+		bg(token);
 	}
     
 	return;
