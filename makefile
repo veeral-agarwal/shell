@@ -1,2 +1,2 @@
-shell: main.c
-	gcc -ggdb -o shell main.c pwd.c echo.c exit.c cd.c ls.c pinfo.c fg.c bg.c
+shell: cd.c execvp.c ls.c pinfo.c echo.c exit.c history.c main.c nightswatch.c pwd.c pipe.c setenviron.c unsetenviron.c jobs.c kjob.c fg.c bg.c overkill.c
+	gcc -ggdb -o shell cd.c execvp.c ls.c pinfo.c echo.c exit.c history.c main.c nightswatch.c pwd.c pipe.c setenviron.c unsetenviron.c jobs.c kjob.c fg.c bg.c overkill.c

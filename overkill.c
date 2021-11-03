@@ -1,13 +1,13 @@
 #include "header.h"
-void exitout()
+void overkill()
 {
 	lp(i, 0, onjobs)
 	{
 		if (fbjobs[i].status == 0)
 		{
+			fbjobs[i].job_name[0] = '\0';
 			kill(fbjobs[i].pid, 9);
-			// fbjobs[i].status = 0;
 		}
 	}
-	exit(1);
+	onjobs = 0;
 }

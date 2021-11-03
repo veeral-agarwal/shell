@@ -1,4 +1,4 @@
-#include "headers.h"
+#include "header.h"
 void pinfo(char *token)
 {
 	token = strtok (token + strlen (token) + 1, " \n");
@@ -16,10 +16,15 @@ void pinfo(char *token)
 	}
 	strcat(prp, "/stat");
 	char buff[10000];
+	lp(i, 0, 10000)
+	{
+		buff[i] = '\0';
+	}
 	int fd = open(prp, O_RDONLY);
 	if (fd < 0)
 	{
-		perror("Error....Unable to open file!!\n");
+		printf("Error....Unable to open file!!\n");
+		return;
 		// exit(0);
 	}
 	char* arr[1000];
@@ -42,5 +47,9 @@ void pinfo(char *token)
 	printf("Executable Path -- %s\n", pathexe);
 	lp(i, 0, 1000)
 	pathexe[i] = '\0';
-	handleonjobs();
+	lp(i, 0, 100)
+	prp[i] = '\0';
+	lp(i, 0, 100)
+	pd[i] = '\0';
+	// handleonjobs();
 }

@@ -1,81 +1,27 @@
-#include "headers.h"
+#include "header.h"
 void month(int x)
 {
-    if(x == 0)
-    {
-        printf(" Jan ");
-    }
-    else if(x == 1)
-    {
-        printf(" Feb ");
-    }
-    else if(x == 2)
-    {
-        printf(" Mar ");
-    }
-    else if(x == 3)
-    {
-        printf(" Apr ");
-    }
-    else if(x == 4)
-    {
-        printf(" May ");
-    }
-    else if(x == 5)
-    {
-        printf(" Jun ");
-    }
-    else if(x == 6)
-    {
-        printf(" Jul ");
-    }
-    else if(x == 7)
-    {
-        printf(" Aug ");
-    }
-    else if(x == 8)
-    {
-        printf(" Sep ");
-    }
-    else if(x == 9)
-    {
-        printf(" Oct ");
-    }
-    else if(x == 10)
-    {
-        printf(" Nov ");
-    }
-    else if(x == 11)
-    {
-        printf(" Dec ");
-    }
+	switch (x)
+	{
+	case 0: printf(" Jan "); break;
+	case 1: printf(" Feb "); break;
+	case 2: printf(" Mar "); break;
+	case 3: printf(" Apr "); break;
+	case 4: printf(" May "); break;
+	case 5: printf(" Jun "); break;
+	case 6: printf(" Jul "); break;
+	case 7: printf(" Aug "); break;
+	case 8: printf(" Sep "); break;
+	case 9: printf(" Oct "); break;
+	case 10: printf(" Nov "); break;
+	case 11: printf(" Dec "); break;
+	}
 }
 void rwx(int x)
 {
-    if(x & 4)
-    {
-        printf("r");
-    }
-    else
-    {
-        printf("-");
-    }
-    if(x & 2)
-    {
-        printf("w");
-    }
-    else
-    {
-        printf("-");
-    }
-    if(x & 1)
-    {
-        printf("x");
-    }
-    else
-    {
-        printf("-");
-    }
+	printf(x & 4 ? "r" : "-");
+	printf(x & 2 ? "w" : "-");
+	printf(x & 1 ? "x" : "-");
 }
 void ls(char *token)
 {
@@ -87,30 +33,20 @@ void ls(char *token)
 	if (token == NULL || strcmp(token, ".") == 0 || strcmp(token, "-a") == 0)
 	{
 		int flag = 1;
-		if (token != NULL )
+		if (token != NULL && strcmp(token, "-a") == 0)
 		{
-            if(strcmp(token, "-a") == 0)
-            {
-                flag = 0;
-            }
+			flag = 0;
 		}
 		while (1)
 		{
 			de = readdir(d);
 			if (de == NULL)
-            {
 				break;
-            }
-			if (!strcmp(de->d_name, ".") || !strcmp(de->d_name, ".."))
-            {
-                if(flag)
-                {
-                    continue;
-                }
-            }
-			printf("%s  ", de->d_name);
+			if ((!strcmp(de->d_name, ".") || !strcmp(de->d_name, "..")) && flag)
+				continue;
+			printf("%s\n", de->d_name);
 		}
-		printf("\n");
+		// printf("\n");
 	}
 	else if (strcmp(token, "..") == 0)
 	{
@@ -119,16 +55,12 @@ void ls(char *token)
 		{
 			de = readdir(d);
 			if (de == NULL)
-            {
 				break;
-            }
 			if (!strcmp(de->d_name, ".") || !strcmp(de->d_name, ".."))
-            {
 				continue;
-            }
-			printf("%s  ", de->d_name);
+			printf("%s\n", de->d_name);
 		}
-		printf("\n");
+		// printf("\n");
 	}
 	else if (strcmp(token, "~") == 0)
 	{
@@ -136,17 +68,13 @@ void ls(char *token)
 		while (1)
 		{
 			if ((!strcmp(de->d_name, ".") || !strcmp(de->d_name, "..")))
-            {
 				continue;
-            }
 			de = readdir(d);
 			if (de == NULL)
-            {
 				break;
-            }
-			printf("%s  ", de->d_name);
+			printf("%s\n", de->d_name);
 		}
-		printf("\n");
+		// printf("\n");
 	}
 	else if ((strcmp(token, "-l") == 0) || (strcmp(token, "-la") == 0) || (strcmp(token, "-al") == 0))
 	{
@@ -160,16 +88,9 @@ void ls(char *token)
 		{
 			de = readdir(d);
 			if (de == NULL)
-            {
 				break;
-            }
-			if (!strcmp(de->d_name, ".") || !strcmp(de->d_name, ".."))
-            {
-                if(flag)
-                {
-                    continue;
-                }
-            }
+			if ((!strcmp(de->d_name, ".") || !strcmp(de->d_name, "..")) && flag)
+				continue;
 			stat(de->d_name, &tp);
 			switch (tp.st_mode & S_IFMT)
 			{
@@ -222,13 +143,11 @@ void ls(char *token)
 		{
 			direcs[count] = token;
 			// strcpy(direcs[count], token);
-			count+=1;
+			count++;
 			// printf("%s\n", direcs[count - 1]);
 			token = strtok (token + strlen (token) + 1, " \n");
 			if (token == NULL)
-            {
 				break;
-            }
 		}
 		direcs[count] = NULL;
 		// printf("%s\n", direcs[0]);
@@ -245,13 +164,9 @@ void ls(char *token)
 					de = readdir(d);
 					// printf("dwad\n");
 					if (de == NULL)
-                    {
 						break;
-                    }
 					if (!strcmp(de->d_name, ".") || !strcmp(de->d_name, ".."))
-                    {
 						continue;
-                    }
 					printf("%s ", de->d_name);
 				}
 				printf("\n");
@@ -263,7 +178,7 @@ void ls(char *token)
 		}
 		else
 		{
-            for(int i=0 ; i<count ; i++)
+			lp(i, 0, count)
 			{
 				printf("%s:\n", direcs[i]);
 				DIR *d = opendir(direcs[i]);
@@ -273,23 +188,15 @@ void ls(char *token)
 					{
 						de = readdir(d);
 						if (de == NULL)
-                        {
 							break;
-                        }
 						if (!strcmp(de->d_name, ".") || !strcmp(de->d_name, ".."))
-                        {
 							continue;
-                        }
 						printf("%s ", de->d_name);
 					}
 					if (i != (count - 1))
-                    {
 						printf("\n\n");
-                    }
 					else
-                    {
 						printf("\n");
-                    }
 				}
 				else
 				{
@@ -298,5 +205,5 @@ void ls(char *token)
 			}
 		}
 	}
-	handleonjobs();
+	// handleonjobs();
 }
