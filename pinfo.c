@@ -1,55 +1,102 @@
-#include "header.h"
-void pinfo(char *token)
+#include "headers.h"
+#include "pinfo.h"
+#include "prompt.h"
+
+bool startswith(char *str1, char *str2)
 {
-	token = strtok (token + strlen (token) + 1, " \n");
-	char prp[100] = "/proc/";
-	char pd[20];
-	if (token == NULL)
-	{
-		int pid = getpid();
-		sprintf(pd, "%d", pid);
-		strcat(prp, pd);
-	}
-	else
-	{
-		strcat(prp, token);
-	}
-	strcat(prp, "/stat");
-	char buff[10000];
-	lp(i, 0, 10000)
-	{
-		buff[i] = '\0';
-	}
-	int fd = open(prp, O_RDONLY);
-	if (fd < 0)
-	{
-		printf("Error....Unable to open file!!\n");
-		return;
-		// exit(0);
-	}
-	char* arr[1000];
-	read(fd, buff, 10000);
-	char *ptr = strtok(buff, " ");
-	int nc = 0;
-	while (ptr != NULL)
-	{
-		arr[nc] = ptr;
-		nc++;
-		ptr = strtok (ptr + strlen (ptr) + 1, " ");
-	}
-	printf("pid -- %s\n", token == NULL ? pd : token );
-	printf("Process Status -- %s\n", arr[2]);
-	printf("memory -- %s    {Virtual Memory}\n", arr[22]);
-	sprintf(prp, "/proc/%s/exe", token == NULL ? pd : token);
-	char pathexe[1000];
-	readlink(prp, pathexe, 1000);
-	// pathexe[strlen(pathexe)] = '\0';
-	printf("Executable Path -- %s\n", pathexe);
-	lp(i, 0, 1000)
-	pathexe[i] = '\0';
-	lp(i, 0, 100)
-	prp[i] = '\0';
-	lp(i, 0, 100)
-	pd[i] = '\0';
-	// handleonjobs();
+    int len1 = strlen(str1), len2 = strlen(str2);
+    if (len1 < len2)
+        return false;
+    for (int x = 0; x < len2; x++)
+    {
+        if (str1[x] != str2[x])
+            return false;
+    }
+    return true;
+}
+
+void pinfo(pid_t pid, char *home_dir)
+{
+    FILE *file_ptr;
+    char *line = NULL;
+
+    char *proc_name = calloc(10000, sizeof(char));
+    char *proc_file = calloc(10000, sizeof(char));
+    sprintf(proc_name, "/proc/%d", pid);
+    strcpy(proc_file, proc_name);
+    strcat(proc_file, "/stat");
+    char a[1000], b[1000], c[1000], d[1000], e[1000], f[1000], g[1000], h[1000], i[1000];
+    size_t len = 0;
+    ssize_t read;
+
+    file_ptr = fopen(proc_file, "r");
+    if (file_ptr == NULL)
+    {
+        perror("Invalid process");
+        return;
+    }
+    printf("pid -- %d\n", pid);
+    fscanf(file_ptr, "%s %s %s %s %s %s %s %s %s", a, b, c, d, e, f, g, h, i);
+    printf("Process Status -- %s", c);
+    // printf("%s\n", a);
+    // printf("%s\n", b);
+    // printf("%s\n", c);
+    // printf("%s\n", d);
+    // printf("%s\n", e);
+    // printf("%s\n", f);
+    // printf("%s\n", g);
+    // printf("%s\n", h);
+    int terminal_pid = atoi(h);
+
+    // if (getpgid(pid) == tcgetpgrp(STDIN_FILENO))
+    // {
+    //     printf("+");
+    // }
+    if (strcmp(c, "R") == 0 || strcmp(c, "S") == 0)
+    {
+        if (getpgid(pid) == terminal_pid)
+            printf("+");
+    }
+    printf("\n");
+    strcpy(proc_file, proc_name);
+    strcat(proc_file, "/status");
+    if (fclose(file_ptr) != 0)
+    {
+        perror("Error closing file");
+    }
+    file_ptr = fopen(proc_file, "r");
+
+    while ((read = getline(&line, &len, file_ptr)) != -1)
+    {
+        if (startswith(line, "VmSize:"))
+        {
+            char *temp_string = calloc(1000, sizeof(char));
+            strcpy(temp_string, line + 8);
+            temp_string[strlen(temp_string) - 1] = '\0';
+            printf("memory -- %s {Virtual Memory}\n", temp_string);
+            free(temp_string);
+        }
+    }
+
+    strcpy(proc_file, proc_name);
+    strcat(proc_file, "/exe");
+    char *executable_path = calloc(1000, sizeof(char));
+    if (readlink(proc_file, executable_path, 1000) < 0)
+    {
+        perror("Error getting exec path");
+        return;
+    }
+    char *final_exec_path = process_path(executable_path, home_dir);
+    printf("Executable Path -- %s\n", final_exec_path);
+    free(executable_path);
+    free(final_exec_path);
+    if (fclose(file_ptr) != 0)
+    {
+        perror("Error closing file");
+    }
+    if (line)
+        free(line);
+
+    free(proc_name);
+    free(proc_file);
 }

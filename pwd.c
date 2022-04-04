@@ -1,7 +1,7 @@
-#include "header.h"
-void pwd()
+#include "pwd.h"
+#include "headers.h"
+
+void get_pwd(char *cwd)
 {
-	getcwd(cwd, 100);
-	printf("%s\n", cwd);
-	// handleonjobs();
+    printf("%s\n", cwd);
 }

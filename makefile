@@ -1,2 +1,2 @@
-shell: cd.c execvp.c ls.c pinfo.c echo.c exit.c history.c main.c nightswatch.c pwd.c pipe.c setenviron.c unsetenviron.c jobs.c kjob.c fg.c bg.c overkill.c
-	gcc -ggdb -o shell cd.c execvp.c ls.c pinfo.c echo.c exit.c history.c main.c nightswatch.c pwd.c pipe.c setenviron.c unsetenviron.c jobs.c kjob.c fg.c bg.c overkill.c
+default:
+	gcc -g main.c prompt.c cd.c bg.c echo.c pwd.c ls.c process.c jobs.c pinfo.c fg.c history.c sig.c baywatch.c -o svsh.out
