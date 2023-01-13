@@ -1,7 +1,4 @@
-# svsh -- Suyash Vardhan Shell
-**Name:** Suyash Vardhan Mathur
 
-**Roll no.:** 2019114006
 
 ## Prerequisites
 
